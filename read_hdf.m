@@ -1,4 +1,4 @@
-filename = 'E:\Data-py\NDVI\2020-5ndvihdf\MOD13A3.A2020122.h26v04.061.2020335213015.hdf';
+filename = "E:\人工林数据\LAI\2000\GLASS01B02.V40.A2000361.2019353.hdf";
 info = hdfinfo(filename);
 
 % 显示获取到的信息
