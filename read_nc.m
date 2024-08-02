@@ -1,7 +1,7 @@
 clc;
 clear;
 %%
-ncFilePath = 'E:\test\spei03.nc'; % 设定NC路径
+ncFilePath = "E:\人工林数据\气温1000\82-20\tmp_1982.nc"; % 设定NC路径
 ncdisp(ncFilePath); % 查看NC结构
 
 % Define the indices for slicing

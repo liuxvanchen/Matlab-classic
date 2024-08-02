@@ -1,30 +1,35 @@
-filename = "E:\人工林数据\LAI\2000\GLASS01B02.V40.A2000361.2019353.hdf";
-info = hdfinfo(filename);
+% Specify the path to your HDF4 file
+file_path = 'E:\test\GLASS01B02.V40.A1982001.2019353.hdf';
 
-% 显示获取到的信息
-disp(info);
+% Get information about the HDF4 file
+info = hdfinfo(file_path);
 
-% 获取Vgroup信息
-vgroup = info.Vgroup;
+% Display dataset names
+dataset_names = {info.Vdata.Name};
+disp('Data set names:');
+disp(dataset_names);
 
-% 显示Vgroup的字段
-disp(fieldnames(vgroup));
-
-% 获取SDS字段
-sds_info = info.Vgroup.Vgroup.SDS;
-
-% 遍历SDS数组，显示每个SDS数据集的名称
-for i = 1:length(sds_info)
-    disp(['数据集名称: ', sds_info(i).Name]);
+% Access and display units of each Vdata
+for i = 1:numel(info.Vdata)
+    vdata_name = info.Vdata(i).Name;
+    vdata_info = info.Vdata(i);
+    
+    % Check if there are any attributes
+    if isfield(vdata_info, 'Attributes')
+        attributes = vdata_info.Attributes;
+        
+        % Look for 'units' attribute
+        units_value = 'Not available'; % default value
+        for j = 1:numel(attributes)
+            if strcmp(attributes(j).Name, 'units')
+                units_value = attributes(j).Value;
+                break;
+            end
+        end
+    else
+        units_value = 'Not available';
+    end
+    
+    disp(['Dataset: ', vdata_name]);
+    disp(['Units: ', units_value]);
 end
-
-
-% 读取“1 km monthly NDVI”数据集
-%ndviData = hdfread(filename, '1 km monthly NDVI', 'Fields', 'fieldname', 'Index', {[] [] []});
-
-% 显示数据
-%disp(ndviData);
-
-data = hdfread(filename, '1 km monthly NDVI', 'Fields', 'fieldname');
-numDims = ndims(data);
-disp(['数据的维度数量: ', num2str(numDims)]);
