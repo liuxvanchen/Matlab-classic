@@ -1,14 +1,14 @@
 % 替换为你的四个 HDF4 文件路径和数据集名称
-filename1 = "E:\人工林数据\LAI\2020\GLASS01B01.V60.A2020121.2022138.hdf";
+filename1 = "E:\人工林数据\2001-2018\2001\GLASS01B02.V40.A2001121.2019353.hdf";
 dataset_name1 = '/LAI';
 
-filename2 = "E:\人工林数据\LAI\2020\GLASS01B01.V60.A2020129.2022138.hdf";
+filename2 = "E:\人工林数据\2001-2018\2001\GLASS01B02.V40.A2001129.2019353.hdf";
 dataset_name2 = '/LAI';
 
-filename3 = "E:\人工林数据\LAI\2020\GLASS01B01.V60.A2020137.2022138.hdf";
+filename3 = "E:\人工林数据\2001-2018\2001\GLASS01B02.V40.A2001137.2019353.hdf";
 dataset_name3 = '/LAI';
 
-filename4 = "E:\人工林数据\LAI\2020\GLASS01B01.V60.A2020145.2022138.hdf";
+filename4 = "E:\人工林数据\2001-2018\2001\GLASS01B02.V40.A2001145.2019353.hdf";
 dataset_name4 = '/LAI';
 
 % 使用 hdfread 函数读取每个 HDF4 文件的指定数据集
@@ -25,7 +25,7 @@ data4 = hdfread(filename4, dataset_name4);
 mean_data = (data1 + data2 + data3 +data4) / 4;
 
 % 输出TXT (.txt) 文件路径
-txt_filename = 'E:\人工林数据\txt\2020\mean_202005.txt';
+txt_filename = 'E:\人工林数据\txt2\2001\mean_200105.txt';
 
 % 打开TXT文件并写入头信息和数据
 fid = fopen(txt_filename, 'w');
@@ -45,5 +45,5 @@ end
 fclose(fid);
 
 % 使用 gdal_translate 将TXT (.txt) 文件转换为 GeoTIFF (.tif) 文件（假设已安装GDAL）
-tif_filename = 'E:\人工林数据\MeanLai\2020\mean_lai202005.tif';
+tif_filename = 'E:\人工林数据\MeanLai2\2001\mean_lai200105.tif';
 system(['gdal_translate -of GTiff ' txt_filename ' ' tif_filename]);
