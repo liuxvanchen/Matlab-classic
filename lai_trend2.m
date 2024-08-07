@@ -1,4 +1,4 @@
-base_lai_folder = 'F:\clip_lai';
+base_lai_folder = 'F:\clip_lai2';
 
 % 初始化一个数组来存储每年的 LAI 平均值
 mean_lai = NaN(length(years), 1); % 预先分配数组大小
@@ -51,8 +51,8 @@ end
 
 % 假设 mean_lai 已经根据年份索引 year_idx 填充了每年的 LAI 平均值
 for year_idx = 1:length(years)
-    % 检查年份是否不是 2016、2019 和 2020
-    if ~(year_idx == 35 || year_idx == 38 || year_idx == 39)
+    % 检查年份是否不是 2019 和 2020
+    if ~(year_idx == 38 || year_idx == 39)
         % 如果年份不是这三个中的任何一个，则乘以0.1
         mean_lai(year_idx) = mean_lai(year_idx) * 0.1;
     end

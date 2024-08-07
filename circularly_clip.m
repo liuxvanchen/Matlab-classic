@@ -1,9 +1,9 @@
 % 输入文件夹和输出文件夹的根路径
-inputRootFolder = 'F:\Spei_tif';  % 输入文件夹的根路径
-outputRootFolder = 'F:\clip_spei';  % 输出文件夹的根路径
+inputRootFolder = 'E:\人工林数据\MeanLai2';  % 输入文件夹的根路径
+outputRootFolder = 'F:\clip_lai2';  % 输出文件夹的根路径
 
 % 循环处理每一年的文件夹
-for year = 1982:2019
+for year = 2001:2018
     % 构造当前年份的文件夹路径
     inputFolder = fullfile(inputRootFolder, num2str(year));
     outputFolder = fullfile(outputRootFolder, num2str(year));

@@ -1,14 +1,14 @@
 % 替换为你的四个 HDF4 文件路径和数据集名称
-filename1 = "E:\人工林数据\2001-2018\2001\GLASS01B02.V40.A2001273.2019353.hdf";
+filename1 = "E:\人工林数据\2001-2018\2018\GLASS01B02.V40.A2018273.2019358.hdf";
 dataset_name1 = '/LAI';
 
-filename2 = "E:\人工林数据\2001-2018\2001\GLASS01B02.V40.A2001281.2019353.hdf";
+filename2 = "E:\人工林数据\2001-2018\2018\GLASS01B02.V40.A2018281.2019358.hdf";
 dataset_name2 = '/LAI';
 
-filename3 = "E:\人工林数据\2001-2018\2001\GLASS01B02.V40.A2001289.2019353.hdf";
+filename3 = "E:\人工林数据\2001-2018\2018\GLASS01B02.V40.A2018289.2019358.hdf";
 dataset_name3 = '/LAI';
 
-filename4 = "E:\人工林数据\2001-2018\2001\GLASS01B02.V40.A2001297.2019353.hdf";
+filename4 = "E:\人工林数据\2001-2018\2018\GLASS01B02.V40.A2018297.2019358.hdf";
 dataset_name4 = '/LAI';
 
 
@@ -27,7 +27,7 @@ mean_data = (data1 + data2 + data3 +data4) / 4;
 %mean_data = (data1 + data2 + data3 ) / 3;
 
 % 输出TXT (.txt) 文件路径
-txt_filename = 'E:\人工林数据\txt2\2001\mean_200110.txt';
+txt_filename = 'E:\人工林数据\txt2\2018\mean_201810.txt';
 
 % 打开TXT文件并写入头信息和数据
 fid = fopen(txt_filename, 'w');
@@ -47,5 +47,5 @@ end
 fclose(fid);
 
 % 使用 gdal_translate 将TXT (.txt) 文件转换为 GeoTIFF (.tif) 文件（假设已安装GDAL）
-tif_filename = 'E:\人工林数据\MeanLai2\2001\mean_lai200110.tif';
+tif_filename = 'E:\人工林数据\MeanLai2\2018\mean_lai201810.tif';
 system(['gdal_translate -of GTiff ' txt_filename ' ' tif_filename]);
