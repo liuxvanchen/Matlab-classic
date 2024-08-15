@@ -58,6 +58,7 @@ for year_idx = 1:length(years)
     end
 end
 
+disp(nanmean(mean_lai))
 
 % 绘制每年的 LAI 平均值折线图
 figure;
@@ -66,3 +67,17 @@ xlabel('Year');
 ylabel('Average LAI');
 title(['Yearly Average LAI from ' num2str(years(1)) ' to ' num2str(years(end)) ]);
 grid on;
+
+%计算去趋势数据，并且从原始数据中移除
+detrend_sdata = detrend(mean_lai);
+trend = mean_lai - detrend_sdata;
+mean(detrend_sdata)
+
+hold on
+plot(years,trend,':r')
+plot(years,detrend_sdata,'m')
+plot(years,zeros(size(years)),':k')
+legend('Original Data','Trend','Detrended Data',...
+       'Mean of Detrended Data','Location','northwest')
+xlabel('Time (years)');
+ylabel('Stock Price (lai)');
