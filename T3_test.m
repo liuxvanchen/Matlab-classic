@@ -1,4 +1,3 @@
-% 基础 LAI 文件夹路径
 base_lai_folder = 'F:\clip_lai2';
 
 month_indices = 1:12;
@@ -6,7 +5,7 @@ years = 1982:2020;
 num_years = length(years);
 
 % 加载 drought_years_per_pixel 数据
-load('drought_data.mat', 'drought_years_per_pixel');
+load('drought_data3.mat', 'drought_years_per_pixel');
 
 % 只处理2月至10月的月份
 valid_month_indices = 2:10;  % 忽略1、11、12月
@@ -20,6 +19,62 @@ mask = (tif_data == 2);
 
 % 获取掩膜区域的像素数
 num_mask_pixels = sum(mask(:));
+
+% 初始化存储去趋势后的 LAI 数据
+detrended_lai = NaN(num_mask_pixels, num_years, length(valid_month_indices));
+
+% 遍历每个像元，进行去趋势处理
+for pixel_idx = 1:num_mask_pixels
+    for month_idx = 1:length(valid_month_indices)
+        month = valid_month_indices(month_idx);
+        
+        % 初始化存储每年该月份的 LAI 值
+        lai_values_per_year = NaN(num_years, 1);
+        
+        % 读取每年该月份的 LAI 数据
+        for year_idx = 1:num_years
+            current_year = years(year_idx);
+            
+            try
+                lai_folder = fullfile(base_lai_folder, num2str(current_year));
+                lai_file = fullfile(lai_folder, sprintf('mean_lai%04d%02d.tif', current_year, month));
+                lai_values = imread(lai_file);
+                
+                % 将 -9999 替换为 NaN
+                lai_values(lai_values == -9999) = NaN;
+                
+                % 提取掩膜区域的 LAI 值
+                lai_values_pixel = lai_values(mask);
+                
+                % 检查年份，如果是2019或2020年，乘以10进行缩放
+                if current_year == 2019 || current_year == 2020
+                    lai_values_pixel = lai_values_pixel * 10;
+                end
+                
+                % 存储每年该月份的 LAI 值
+                lai_values_per_year(year_idx) = lai_values_pixel(pixel_idx);
+                
+            catch
+                warning('File not found for year %d, skipping to next year...', current_year);
+                continue;
+            end
+        end
+        
+        % 对该像素点的时间序列进行去趋势处理
+        X = (1:num_years)';  % 年份作为时间序列
+        non_nan_idx = ~isnan(lai_values_per_year);
+        
+        if sum(non_nan_idx) > 1
+            % 对 LAI 值进行线性回归去趋势
+            p = polyfit(X(non_nan_idx), lai_values_per_year(non_nan_idx), 1);
+            trend = polyval(p, X);
+            detrended_lai(pixel_idx, :, month_idx) = lai_values_per_year - trend;
+        else
+            % 如果没有足够的数据点，保留原始数据
+            detrended_lai(pixel_idx, :, month_idx) = lai_values_per_year;
+        end
+    end
+end
 
 % 初始化存储干旱后两个月 LAI 值和 39 年间这两个月 LAI 值的数组
 lai_drought_post_all = [];
@@ -122,5 +177,3 @@ end
 disp('显著性检验结果：');
 disp(['h = ', num2str(h)]);
 disp(['p-value = ', num2str(p)]);
-
-
